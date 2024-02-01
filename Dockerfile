@@ -6,7 +6,7 @@ LABEL Description="Based on [duplicacy-autobackup], add [TZ] Environment and fix
 #--
 #-- Build variables
 #--
-ARG DUPLICACY_VERSION=2.7.2
+ARG DUPLICACY_VERSION=3.2.3
 
 #--
 #-- Environment variables
@@ -41,7 +41,8 @@ ENV BACKUP_SCHEDULE='* * * * *' \
 #--
 #-- Other steps
 #--
-RUN apk --no-cache add ca-certificates && update-ca-certificates && tzdate
+RUN apk --no-cache add ca-certificates && update-ca-certificates
+RUN apk --no-cache add tzdata
 RUN ARCH="$(uname -m)";\
     if [ "$ARCH" == "x86_64" ]; then \
         DUPLICACY_ARCH="x64"; \
