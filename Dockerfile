@@ -1,5 +1,7 @@
 FROM alpine:3.15.0
-MAINTAINER Christophe Tafani-Dereeper <christophe@tafani-dereeper.me>
+LABEL Maintainer="Christophe Tafani-Dereeper <christophe@tafani-dereeper.me>"
+LABEL Modified By="Hardy"
+LABEL Description="Based on [duplicacy-autobackup], add [TZ] Environment and fix a VOLUME bug."
 
 #--
 #-- Build variables
@@ -33,12 +35,13 @@ ENV BACKUP_SCHEDULE='* * * * *' \
     GCS_TOKEN_FILE='' \
     ONEDRIVE_TOKEN_FILE='' \
     PRUNE_SCHEDULE='0 0 * * *' \
-    DUPLICACY_PRUNE_OPTIONS=''
+    DUPLICACY_PRUNE_OPTIONS=''\
+    TZ='UTC'
 
 #--
 #-- Other steps
 #--
-RUN apk --no-cache add ca-certificates && update-ca-certificates
+RUN apk --no-cache add ca-certificates && update-ca-certificates && tzdate
 RUN ARCH="$(uname -m)";\
     if [ "$ARCH" == "x86_64" ]; then \
         DUPLICACY_ARCH="x64"; \
